@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toko Online Saya</title>
+  <!-- Tailwind CSS via CDN untuk styling cepat -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+
+  <!-- Navbar -->
+  <header class="sticky top-0 z-50 bg-white shadow-md">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-indigo-600">TokoKita</h1>
+      
+      <!-- Tombol Keranjang -->
+      <button onclick="toggleCart()" class="relative bg-indigo-50 p-2 rounded-full hover:bg-indigo-100 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+        </svg>
+        <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="bg-indigo-600 text-white py-12 mb-8">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl md:text-5xl font-extrabold mb-3">Selamat Datang di TokoKita</h2>
+      <p class="text-indigo-100 text-lg">Temukan produk impian Anda dengan harga terbaik.</p>
+    </div>
+  </section>
+
+  <!-- Katalog Produk -->
+  <main class="container mx-auto px-4 mb-16">
+    <h3 class="text-2xl font-bold mb-6 text-gray-900">Produk Terbaru</h3>
+    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <!-- Produk akan di-render secara dinamis dari JavaScript -->
+    </div>
+  </main>
+
+  <!-- Drawer / Sidebar Keranjang Belanja -->
+  <div id="cart-drawer" class="fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50 p-6 flex flex-col justify-between">
+    <div>
+      <div class="flex justify-between items-center border-b pb-4 mb-4">
+        <h3 class="text-xl font-bold">Keranjang Belanja</h3>
+        <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-800 text-2xl font-bold">&times;</button>
+      </div>
+      
+      <!-- List Item Keranjang -->
+      <div id="cart-items" class="space-y-4 max-h-[60vh] overflow-y-auto">
+        <p class="text-gray-500 text-center py-8">Keranjang Anda masih kosong.</p>
+      </div>
+    </div>
+
+    <!-- Total & Checkout -->
+    <div class="border-t pt-4">
+      <div class="flex justify-between font-bold text-lg mb-4">
+        <span>Total:</span>
+        <span id="cart-total">Rp 0</span>
+      </div>
+      <button onclick="checkout()" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
+        Checkout via WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <!-- Overlay Gelap saat Keranjang Terbuka -->
+  <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
+
+  <!-- JavaScript Logic -->
+  <script>
+    // Data dummy produk (Bisa diganti atau diambil dari Database/API)
+    const products = [
+      { id: 1, name: "Kemeja Casual Kasual", price: 150000, image: "https://via.placeholder.com/300x200?text=Kemeja" },
+      { id: 2, name: "Sepatu Sneaker Off-White", price: 350000, image: "https://via.placeholder.com/300x200?text=Sepatu" },
+      { id: 3, name: "Jam Tangan Elegan", price: 250000, image: "https://via.placeholder.com/300x200?text=Jam+Tangan" },
+      { id: 4, name: "Tas Ransel Laptop", price: 200000, image: "https://via.placeholder.com/300x200?text=Tas+Ransel" }
+    ];
+
+    let cart = [];
+
+    // Format mata uang Rupiah
+    function formatRupiah(number) {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number);
+    }
+
+    // Render Produk ke HTML
+    function renderProducts() {
+      const grid = document.getElementById("product-grid");
+      grid.innerHTML = products.map(product => `
+        <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition overflow-hidden border">
+          <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <h4 class="font-semibold text-lg mb-1">${product.name}</h4>
+            <p class="text-indigo-600 font-bold mb-4">${formatRupiah(product.price)}</p>
+            <button onclick="addToCart(${product.id})" class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition text-sm font-medium">
+              + Tambah ke Keranjang
+            </button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    // Tambah Produk ke Keranjang
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      const existingItem = cart.find(item => item.id === productId);
+
+      if (existingItem) {
+        existingItem.qty += 1;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+
+      updateCart();
+    }
+
+    // Update Tampilan Keranjang
+    function updateCart() {
+      const cartItemsContainer = document.getElementById("cart-items");
+      const cartCount = document.getElementById("cart-count");
+      const cartTotal = document.getElementById("cart-total");
+
+      // Count total qty
+      const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+      cartCount.textContent = totalQty;
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `<p class="text-gray-500 text-center py-8">Keranjang Anda masih kosong.</p>`;
+        cartTotal.textContent = "Rp 0";
+        return;
+      }
+
+      // Render Item di Keranjang
+      cartItemsContainer.innerHTML = cart.map(item => `
+        <div class="flex justify-between items-center border-b pb-2">
+          <div>
+            <h5 class="font-semibold text-sm">${item.name}</h5>
+            <p class="text-xs text-gray-500">${formatRupiah(item.price)} x ${item.qty}</p>
+          </div>
+          <div class="font-bold text-sm text-indigo-600">
+            ${formatRupiah(item.price * item.qty)}
+          </div>
+        </div>
+      `).join("");
+
+      // Total Harga
+      const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      cartTotal.textContent = formatRupiah(total);
+    }
+
+    // Buka/Tutup Sidebar Keranjang
+    function toggleCart() {
+      const drawer = document.getElementById("cart-drawer");
+      const overlay = document.getElementById("cart-overlay");
+      drawer.classList.toggle("translate-x-full");
+      overlay.classList.toggle("hidden");
+    }
+
+    // Checkout via WhatsApp Sederhana
+    function checkout() {
+      if (cart.length === 0) {
+        alert("Keranjang belanja Anda masih kosong!");
+        return;
+      }
+
+      const nomorWA = "6281234567890"; // Ganti dengan nomor WhatsApp Anda
+      let pesan = "Halo, saya ingin memesan produk berikut:\n\n";
+      
+      cart.forEach((item, index) => {
+        pesan += `${index + 1}. ${item.name} (${item.qty}x) = ${formatRupiah(item.price * item.qty)}\n`;
+      });
+
+      const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      pesan += `\n*Total Bayar: ${formatRupiah(total)}*`;
+
+      const url = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
+      window.open(url, '_blank');
+    }
+
+    // Jalankan saat pertama kali dibuka
+    renderProducts();
+  </script>
+</body>
+</html>
