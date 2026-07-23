@@ -1,187 +1,314 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Toko Online Saya</title>
-  <!-- Tailwind CSS via CDN untuk styling cepat -->
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mella Home care</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-50 font-sans text-gray-800">
 
-  <!-- Navbar -->
-  <header class="sticky top-0 z-50 bg-white shadow-md">
-    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold text-indigo-600">TokoKita</h1>
-      
-      <!-- Tombol Keranjang -->
-      <button onclick="toggleCart()" class="relative bg-indigo-50 p-2 rounded-full hover:bg-indigo-100 transition">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
-        </svg>
-        <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
-      </button>
-    </div>
-  </header>
+<body>
 
-  <!-- Hero Banner -->
-  <section class="bg-indigo-600 text-white py-12 mb-8">
-    <div class="container mx-auto px-4 text-center">
-      <h2 class="text-3xl md:text-5xl font-extrabold mb-3">Selamat Datang di TokoKita</h2>
-      <p class="text-indigo-100 text-lg">Temukan produk impian Anda dengan harga terbaik.</p>
-    </div>
-  </section>
+<!-- ================= NAVBAR ================= -->
 
-  <!-- Katalog Produk -->
-  <main class="container mx-auto px-4 mb-16">
-    <h3 class="text-2xl font-bold mb-6 text-gray-900">Produk Terbaru</h3>
-    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      <!-- Produk akan di-render secara dinamis dari JavaScript -->
-    </div>
-  </main>
+<nav>
 
-  <!-- Drawer / Sidebar Keranjang Belanja -->
-  <div id="cart-drawer" class="fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50 p-6 flex flex-col justify-between">
-    <div>
-      <div class="flex justify-between items-center border-b pb-4 mb-4">
-        <h3 class="text-xl font-bold">Keranjang Belanja</h3>
-        <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-800 text-2xl font-bold">&times;</button>
-      </div>
-      
-      <!-- List Item Keranjang -->
-      <div id="cart-items" class="space-y-4 max-h-[60vh] overflow-y-auto">
-        <p class="text-gray-500 text-center py-8">Keranjang Anda masih kosong.</p>
-      </div>
+    <div class="logo">
+        <h2>Mella Home Care</h2>
     </div>
 
-    <!-- Total & Checkout -->
-    <div class="border-t pt-4">
-      <div class="flex justify-between font-bold text-lg mb-4">
-        <span>Total:</span>
-        <span id="cart-total">Rp 0</span>
-      </div>
-      <button onclick="checkout()" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
-        Checkout via WhatsApp
-      </button>
-    </div>
-  </div>
+    <ul>
+        <li><a href="#beranda">Beranda</a></li>
+        <li><a href="#layanan">Layanan</a></li>
+        <li><a href="#alasan">Keunggulan</a></li>
+        <li><a href="#cara">Pemesanan</a></li>
+        <li><a href="#rekrutmen">Rekrutmen</a></li>
+        <li><a href="#visi">Visi & Misi</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#kontak">Kontak</a></li>
+    </ul>
 
-  <!-- Overlay Gelap saat Keranjang Terbuka -->
-  <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
+</nav>
 
-  <!-- JavaScript Logic -->
-  <script>
-    // Data dummy produk (Bisa diganti atau diambil dari Database/API)
-    const products = [
-      { id: 1, name: "Kemeja Casual Kasual", price: 150000, image: "https://via.placeholder.com/300x200?text=Kemeja" },
-      { id: 2, name: "Sepatu Sneaker Off-White", price: 350000, image: "https://via.placeholder.com/300x200?text=Sepatu" },
-      { id: 3, name: "Jam Tangan Elegan", price: 250000, image: "https://via.placeholder.com/300x200?text=Jam+Tangan" },
-      { id: 4, name: "Tas Ransel Laptop", price: 200000, image: "https://via.placeholder.com/300x200?text=Tas+Ransel" }
-    ];
+<!-- ================= HERO ================= -->
 
-    let cart = [];
+<section class="hero" id="beranda">
 
-    // Format mata uang Rupiah
-    function formatRupiah(number) {
-      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number);
-    }
+    <div class="hero-text">
 
-    // Render Produk ke HTML
-    function renderProducts() {
-      const grid = document.getElementById("product-grid");
-      grid.innerHTML = products.map(product => `
-        <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition overflow-hidden border">
-          <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
-          <div class="p-4">
-            <h4 class="font-semibold text-lg mb-1">${product.name}</h4>
-            <p class="text-indigo-600 font-bold mb-4">${formatRupiah(product.price)}</p>
-            <button onclick="addToCart(${product.id})" class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition text-sm font-medium">
-              + Tambah ke Keranjang
-            </button>
-          </div>
+        <h1>Mella Home Care</h1>
+
+        <h2>
+            Pendamping Terpercaya
+            untuk Keluarag Anda
+        </h2>
+
+        <p>
+            Kami membantu keluarga mendapatkan Caregiver Lansia,
+            Baby Sitter, dan Asisten Rumah Tangga yang telah melalui
+            proses seleksi sehingga memberikan pelayanan yang amanah,
+            profesional, dan penuh perhatian.
+        </p>
+
+        <div class="hero-button">
+
+            <a href="https://wa.me/6285119838385" class="btn-wa">
+                Hubungi via WhatsApp
+            </a>
+
+            <a href="#layanan" class="btn-outline">
+                Lihat Layanan
+            </a>
+
         </div>
-      `).join("");
-    }
 
-    // Tambah Produk ke Keranjang
-    function addToCart(productId) {
-      const product = products.find(p => p.id === productId);
-      const existingItem = cart.find(item => item.id === productId);
+    </div>
 
-      if (existingItem) {
-        existingItem.qty += 1;
-      } else {
-        cart.push({ ...product, qty: 1 });
-      }
+    <div class="hero-image">
+        <img src="images/caregiver.png" alt="Caregiver">
+    </div>
 
-      updateCart();
-    }
+</section>
 
-    // Update Tampilan Keranjang
-    function updateCart() {
-      const cartItemsContainer = document.getElementById("cart-items");
-      const cartCount = document.getElementById("cart-count");
-      const cartTotal = document.getElementById("cart-total");
+<!-- ================= LAYANAN ================= -->
 
-      // Count total qty
-      const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-      cartCount.textContent = totalQty;
+<section class="layanan" id="layanan">
 
-      if (cart.length === 0) {
-        cartItemsContainer.innerHTML = `<p class="text-gray-500 text-center py-8">Keranjang Anda masih kosong.</p>`;
-        cartTotal.textContent = "Rp 0";
-        return;
-      }
+    <h2>Layanan Kami</h2>
 
-      // Render Item di Keranjang
-      cartItemsContainer.innerHTML = cart.map(item => `
-        <div class="flex justify-between items-center border-b pb-2">
-          <div>
-            <h5 class="font-semibold text-sm">${item.name}</h5>
-            <p class="text-xs text-gray-500">${formatRupiah(item.price)} x ${item.qty}</p>
-          </div>
-          <div class="font-bold text-sm text-indigo-600">
-            ${formatRupiah(item.price * item.qty)}
-          </div>
+    <p class="section-subtitle">
+        Kami menyediakan tenaga profesional sesuai kebutuhan keluarga Anda.
+    </p>
+
+    <div class="card-container">
+
+        <div class="card">
+            <h3>👵 Caregiver Lansia</h3>
+            <p>
+                Pendampingan lansia untuk aktivitas sehari-hari,
+                menjaga kebersihan, dan memberikan perhatian penuh.
+            </p>
         </div>
-      `).join("");
 
-      // Total Harga
-      const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-      cartTotal.textContent = formatRupiah(total);
-    }
+        <div class="card">
+            <h3>👶 Baby Sitter</h3>
+            <p>
+                Perawatan bayi dan anak dengan penuh kasih sayang,
+                sabar, dan bertanggung jawab.
+            </p>
+        </div>
 
-    // Buka/Tutup Sidebar Keranjang
-    function toggleCart() {
-      const drawer = document.getElementById("cart-drawer");
-      const overlay = document.getElementById("cart-overlay");
-      drawer.classList.toggle("translate-x-full");
-      overlay.classList.toggle("hidden");
-    }
+        <div class="card">
+            <h3>🏠 Asisten Rumah Tangga</h3>
+            <p>
+                Membantu pekerjaan rumah agar aktivitas keluarga
+                menjadi lebih nyaman.
+            </p>
+        </div>
 
-    // Checkout via WhatsApp Sederhana
-    function checkout() {
-      if (cart.length === 0) {
-        alert("Keranjang belanja Anda masih kosong!");
-        return;
-      }
+    </div>
 
-      const nomorWA = "6281332367530"; // Ganti dengan nomor WhatsApp Anda
-      let pesan = "Halo, saya ingin memesan produk berikut:\n\n";
-      
-      cart.forEach((item, index) => {
-        pesan += `${index + 1}. ${item.name} (${item.qty}x) = ${formatRupiah(item.price * item.qty)}\n`;
-      });
+</section>
 
-      const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-      pesan += `\n*Total Bayar: ${formatRupiah(total)}*`;
+<!-- ================= MENGAPA MEMILIH ================= -->
 
-      const url = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
-      window.open(url, '_blank');
-    }
+<section class="alasan" id="alasan">
 
-    // Jalankan saat pertama kali dibuka
-    renderProducts();
-  </script>
+    <h2>Mella Home Care?</h2>
+
+    <p class="section-subtitle">
+        Kami berkomitmen memberikan pelayanan terbaik bagi setiap keluarga.
+    </p>
+
+    <div class="alasan-container">
+
+        <div class="alasan-card">
+            <h3>✅ Seleksi Tenaga</h3>
+            <p>Setiap tenaga melalui proses seleksi administrasi, wawancara, dan verifikasi.</p>
+        </div>
+
+        <div class="alasan-card">
+            <h3>🤝 Pendampingan</h3>
+            <p>Kami membantu memilih tenaga yang sesuai dengan kebutuhan keluarga.</p>
+        </div>
+
+        <div class="alasan-card">
+            <h3>💙 Pelayanan Ramah</h3>
+            <p>Komunikasi cepat, ramah, dan mengutamakan kepuasan pelanggan.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= CARA PEMESANAN ================= -->
+
+<section class="cara" id="cara">
+
+    <h2>Cara Pemesanan</h2>
+
+    <div class="cara-container">
+
+        <div class="cara-card">
+            <h3>1️⃣ Konsultasi</h3>
+            <p>Hubungi kami melalui WhatsApp dan sampaikan kebutuhan Anda.</p>
+        </div>
+
+        <div class="cara-card">
+            <h3>2️⃣ Pilih Layanan</h3>
+            <p>Kami membantu memilih tenaga yang paling sesuai.</p>
+        </div>
+
+        <div class="cara-card">
+            <h3>3️⃣ Penempatan</h3>
+            <p>Setelah proses selesai, tenaga siap ditempatkan.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= REKRUTMEN ================= -->
+
+<section class="rekrutmen" id="rekrutmen">
+
+    <h2>Proses Rekrutmen Tenaga Kami</h2>
+
+    <div class="rekrut-container">
+
+        <div class="rekrut-card">
+            <h3>1️⃣ Seleksi Administrasi</h3>
+            <p>Pemeriksaan identitas, dokumen, dan pengalaman kerja.</p>
+        </div>
+
+        <div class="rekrut-card">
+            <h3>2️⃣ Wawancara</h3>
+            <p>Menilai sikap, komunikasi, dan tanggung jawab.</p>
+        </div>
+
+        <div class="rekrut-card">
+            <h3>3️⃣ Verifikasi Data</h3>
+            <p>Pengecekan data dan referensi calon tenaga.</p>
+        </div>
+
+        <div class="rekrut-card">
+            <h3>4️⃣ Siap Ditempatkan</h3>
+            <p>Tenaga siap direkomendasikan sesuai kebutuhan keluarga.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= VISI ================= -->
+
+<section class="visi" id="visi">
+
+    <h2>Visi & Misi</h2>
+
+    <div class="visi-container">
+
+        <div class="visi-box">
+            <h3>🌟 Visi</h3>
+            <p>
+                Menjadi penyedia layanan Caregiver, Baby Sitter, dan Asisten Rumah Tangga
+                yang profesional, terpercaya, dan mengutamakan pelayanan dengan hati.
+            </p>
+        </div>
+
+        <div class="visi-box">
+            <h3>🎯 Misi</h3>
+
+            <ul>
+                <li>Memberikan pelayanan yang ramah.</li>
+                <li>Menyediakan tenaga profesional.</li>
+                <li>Mengutamakan kejujuran dan tanggung jawab.</li>
+                <li>Meningkatkan kualitas pelayanan.</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= FAQ ================= -->
+
+<section class="faq" id="faq">
+
+    <h2>Pertanyaan yang Sering Diajukan</h2>
+
+    <div class="faq-item">
+        <h3>Apakah tenaga sudah melalui seleksi?</h3>
+        <p>Ya, seluruh tenaga telah melalui proses seleksi sesuai prosedur.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Apakah bisa memilih tenaga?</h3>
+        <p>Tentu, kami membantu mencarikan tenaga sesuai kebutuhan keluarga.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>Bagaimana cara pemesanan?</h3>
+        <p>Silakan hubungi kami melalui WhatsApp untuk konsultasi.</p>
+    </div>
+
+</section>
+
+<!-- ================= KONTAK ================= -->
+
+<section class="kontak" id="kontak">
+
+    <h2>Hubungi Kami</h2>
+
+    <p>
+        Konsultasikan kebutuhan Anda kepada kami.
+        Tim Mella Home Care siap membantu Anda.
+    </p>
+
+    <div class="kontak-container">
+
+        <div class="kontak-card">
+            <h3>📱 WhatsApp</h3>
+            <p>0851-1983-8385</p>
+        </div>
+
+        <div class="kontak-card">
+            <h3>📧 Email</h3>
+            <p>mellahomecare@email.com</p>
+        </div>
+
+        <div class="kontak-card">
+            <h3>📍 Wilayah Layanan</h3>
+            <p>Sesuaikan dengan wilayah operasional Anda.</p>
+        </div>
+
+    </div>
+
+    <a href="https://wa.me/6285119838385" class="btn-wa">
+        Hubungi via WhatsApp
+    </a>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <h3>Mella Home Care</h3>
+
+    <p>Melayani dengan Hati, Merawat dengan Kasih.</p>
+
+    <p>&copy; 2026 Mella Home Care. All Rights Reserved.</p>
+
+</footer>
+
 </body>
 </html>
